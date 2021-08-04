@@ -1,10 +1,11 @@
 ---
 title: "Covid91 vaccine study Final2021"
-author: "Put your name here!"
-date: "put the date here"
+author: "Desiree De La Rosa"
+date: "Summer 2021"
 output: 
     html_document:
     toc: true
+    toc_depth: 5
 ---
 
 ```{r include=FALSE,echo=FALSE}
@@ -14,6 +15,11 @@ require(forcats)
 OldData <-read.csv(file="covid91.csv",header=TRUE)
 #recode to remove the annoying "X" from the dataframe
 FinalData <- OldData %>% mutate(infected = recode(infected, aids = "covid", none = "OK" )) %>% select(-one_of("X"))
+FinalData$treatment <- as.factor(FinalData$treatment)
+FinalData$sex <- as.factor(FinalData$sex)
+FinalData$infected <- as.factor(FinalData$infected)
+FinalData$LGBTQ <- as.factor(FinalData$LGBTQ)
+FinalData$drug <- as.factor(FinalData$DrugUser)
 ```
 
 # Introduction
