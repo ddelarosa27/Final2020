@@ -1,12 +1,11 @@
 ---
 title: "Covid19 vaccine study Final2021"
 author: "Desiree De La Rosa"
+date: "Summer 2021"
 output: 
-  html_document:
-    number_sections: true
-    toc: true
-    toc_depth: 5
-date: "`r Sys.Date()`"    
+   html_document:
+         toc: true
+         toc_depth: 5
     
 ---
 
@@ -19,6 +18,8 @@ oldData <-read.csv(file="covid91.csv",header=TRUE)
 FinalData <- oldData %>% mutate(infected = recode(infected, aids = "covid", none = "OK" )) %>% select(-one_of("X"))
 FinalData <- FinalData %>%
 mutate(across(where(is.character), as.factor))
+#FinalData$treatment <- relevel(FinalData$treatment,ref="placebo")
+FinalData$treatment <- relevel(FinalData$treatment,ref="placebo")
 guy = filter(FinalData, sex =="guy")
 gal = filter(FinalData, sex =="gal")
 gay = filter(FinalData, LGBTQ =="gay")
@@ -70,10 +71,25 @@ The numerical results show that among the guys 58% got covid after taking then v
 ```{r}
 chisq.test(table1)
 chisqtestGC(table1)
-fisher.test(table1)
+guysfish <- fisher.test(table1)
+guysfish
 ```
 
 Based on the inferential results we can reject the null hypothesis in favor of the alternative, since the p-value is 0.0005801, which is a very tiny number. The null predicted that the deaths related to covid are independent of sex but clearly sex is a factor in the death rates for covid for guys. 
+
+```{r}
+effect <- guysfish$p.value/(guysfish$p.value +1)
+effectivenessguy = guysfish$estimate/(guysfish$estimate +1)
+print(effectivenessguy*100)
+```
+
+```{r}
+low=(guysfish$conf.int[1]/(guysfish$conf.int[1] +1))
+hi=(guysfish$conf.int[2]/(guysfish$conf.int[2] +1))
+options(digits=2)
+```
+
+## Effective confidence interval `r low` to `r hi`
 
 # Gals
 
@@ -115,10 +131,26 @@ The numerical results show that the percentage of gals who took the vaccine and 
 ```{r}
 chisq.test(table1)
 chisqtestGC(table1)
-fisher.test(table1)
+galsfish <- fisher.test(table1)
+galsfish
 ```
 
-Based on the results in the fishers test the p-value is < 2.2e-16 which is very small and this means the results aren't likely to occur by chance so the null hypothesis can be rejected in favor of the alternative.
+Based on the results in the fishers test the p-value is <2e-16 which is very small and this means the results aren't likely to occur by chance so the null hypothesis can be rejected in favor of the alternative.
+
+```{r}
+effect <- galsfish$p.value/(galsfish$p.value +1)
+effectivenessgal = galsfish$estimate/(galsfish$estimate +1)
+print(effectivenessgal*100)
+```
+
+```{r}
+low=(galsfish$conf.int[1]/(galsfish$conf.int[1] +1))
+hi=(galsfish$conf.int[2]/(galsfish$conf.int[2] +1))
+options(digits=2)
+```
+
+## Effective confidence interval `r low` to `r hi`
+
 
 # Gay Sexual Orientation
 
@@ -160,10 +192,25 @@ The 71% of the gay participants who took the vaccine got covid, only 29% of thos
 ```{r}
 chisq.test(table1)
 chisqtestGC(table1)
-fisher.test(table1)
+gayfish <- fisher.test(table1)
+gayfish
 ```
 
-The p-value in these inferential results is 5.741e-06, which is a very small number as well meaning these results are unlikely to occur by chance therefore we can reject the null hypothesis in favor of the alternative.
+The p-value in these inferential results is 6e-06, which is a very small number as well meaning these results are unlikely to occur by chance therefore we can reject the null hypothesis in favor of the alternative.
+
+```{r}
+effect <- gayfish$p.value/(gayfish$p.value +1)
+effectivenessgay = gayfish$estimate/(gayfish$estimate +1)
+print(effectivenessgay*100)
+```
+
+```{r}
+low=(gayfish$conf.int[1]/(gayfish$conf.int[1] +1))
+hi=(gayfish$conf.int[2]/(gayfish$conf.int[2] +1))
+options(digits=2)
+```
+
+## Effective confidence interval `r low` to `r hi`
 
 # Drug Users
 
@@ -205,12 +252,31 @@ The numerical results show that the percentage of drug used to got the vaccine a
 ```{r}
 chisq.test(table1)
 chisqtestGC(table1)
-fisher.test(table1)
+DrugUserfish <- fisher.test(table1)
+DrugUserfish
 ```
 
 The inferential results show that the p-value is 0.002273, this means the results are unlikely to occur by chance. The fishers results show that odds ratio is 0.54 of drug users are half as like to get covid than those who took the placebo. The null hypothesis can be rejected in favor of the alternative since the drug is effective in preventing covid in drug users. 
 
-# Conclusion
+```{r}
+effect <- DrugUserfish$p.value/(DrugUserfish$p.value +1)
+effectivenessDrugUser = DrugUserfish$estimate/(DrugUserfish$estimate +1)
+print(effectivenessDrugUser*100)
+```
 
-The Covid-19 vaccine was not effective in participants who are men or gay.The odds for gay people who took the vaccine were at most at 3:1, thats three times more likely to get covid with the vaccine than with placebo. The Covid-19 vaccine effectively protected drug users, their odds were 1:2 with the vaccine. That's half as likely to get covid than those taking placebo. The vaccine is not reccomended for people who are gay. It is recommended fro individuals who are female or drug users since it was the most effective in those two groups.
+```{r}
+low=(DrugUserfish$conf.int[1]/(DrugUserfish$conf.int[1] +1))
+hi=(DrugUserfish$conf.int[2]/(DrugUserfish$conf.int[2] +1))
+options(digits=2)
+```
+
+## Effective confidence interval `r low` to `r hi`
+
+# Conclusion and Recommendations
+
+The Covid-19 vaccine was not effective in participants who are men or gay.The covid-19 effectiveness for guys was `r effectivenessguy` . The covid-19 effectiveness for gay participants was `r effectivenessgay` . The odds for gay people who took the vaccine were at most at 3:1, that's three times more likely to get covid with the vaccine than with placebo. 
+
+The Covid-19 vaccine effectively protected women and drug users, their odds were 1:2 with the vaccine. That's half as likely to get covid than those taking placebo. The effectiveness for gals was `r effectivenessgal` and for drug users it was `r effectivenessDrugUser` .
+
+The vaccine is not recommended for people who are gay. It is recommended for individuals who are female or drug users since it was the most effective in those two groups.
 
