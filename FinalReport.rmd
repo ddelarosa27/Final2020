@@ -79,13 +79,13 @@ Based on the inferential results we can reject the null hypothesis in favor of t
 
 ```{r}
 effect <- guysfish$p.value/(guysfish$p.value +1)
-effectivenessguy = guysfish$estimate/(guysfish$estimate +1)
-print(effectivenessguy*100)
+effectivenessguy = guysfish$estimate/(guysfish$estimate +1)*100
+print(effectivenessguy)
 ```
 
 ```{r}
-low=(guysfish$conf.int[1]/(guysfish$conf.int[1] +1))
-hi=(guysfish$conf.int[2]/(guysfish$conf.int[2] +1))
+low=(guysfish$conf.int[1]/(guysfish$conf.int[1] +1))*100
+hi=(guysfish$conf.int[2]/(guysfish$conf.int[2] +1))*100
 options(digits=2)
 ```
 
@@ -139,13 +139,13 @@ Based on the results in the fishers test the p-value is <2e-16 which is very sma
 
 ```{r}
 effect <- galsfish$p.value/(galsfish$p.value +1)
-effectivenessgal = galsfish$estimate/(galsfish$estimate +1)
-print(effectivenessgal*100)
+effectivenessgal = galsfish$estimate/(galsfish$estimate +1)*100
+print(effectivenessgal)
 ```
 
 ```{r}
-low=(galsfish$conf.int[1]/(galsfish$conf.int[1] +1))
-hi=(galsfish$conf.int[2]/(galsfish$conf.int[2] +1))
+low=(galsfish$conf.int[1]/(galsfish$conf.int[1] +1))*100
+hi=(galsfish$conf.int[2]/(galsfish$conf.int[2] +1))*100
 options(digits=2)
 ```
 
@@ -196,17 +196,17 @@ gayfish <- fisher.test(table1)
 gayfish
 ```
 
-The p-value in these inferential results is 6e-06, which is a very small number as well meaning these results are unlikely to occur by chance therefore we can reject the null hypothesis in favor of the alternative.
+The p-value in these inferential results is 6e-06, which is a very small number as well meaning these results are unlikely to occur by chance. The odds of gay people getting covid with the vaccine is 2.5 moree likely than those who took placebo. Therefore we can reject the null hypothesis in favor of the alternative.
 
 ```{r}
 effect <- gayfish$p.value/(gayfish$p.value +1)
-effectivenessgay = gayfish$estimate/(gayfish$estimate +1)
-print(effectivenessgay*100)
+effectivenessgay = gayfish$estimate/(gayfish$estimate +1)*100
+print(effectivenessgay)
 ```
 
 ```{r}
-low=(gayfish$conf.int[1]/(gayfish$conf.int[1] +1))
-hi=(gayfish$conf.int[2]/(gayfish$conf.int[2] +1))
+low=(gayfish$conf.int[1]/(gayfish$conf.int[1] +1))*100
+hi=(gayfish$conf.int[2]/(gayfish$conf.int[2] +1))*100
 options(digits=2)
 ```
 
@@ -256,17 +256,17 @@ DrugUserfish <- fisher.test(table1)
 DrugUserfish
 ```
 
-The inferential results show that the p-value is 0.002273, this means the results are unlikely to occur by chance. The fishers results show that odds ratio is 0.54 of drug users are half as like to get covid than those who took the placebo. The null hypothesis can be rejected in favor of the alternative since the drug is effective in preventing covid in drug users. 
+The inferential results show that the p-value is 0.002, this means the results are unlikely to occur by chance. The fishers results show that odds ratio is 0.55 of drug users are half as like to get covid than those who took the placebo. The null hypothesis can be rejected in favor of the alternative since the drug is effective in preventing covid in drug users that took the vaccine`. 
 
 ```{r}
 effect <- DrugUserfish$p.value/(DrugUserfish$p.value +1)
-effectivenessDrugUser = DrugUserfish$estimate/(DrugUserfish$estimate +1)
-print(effectivenessDrugUser*100)
+effectivenessDrugUser = DrugUserfish$estimate/(DrugUserfish$estimate +1)*100
+print(effectivenessDrugUser)
 ```
 
 ```{r}
-low=(DrugUserfish$conf.int[1]/(DrugUserfish$conf.int[1] +1))
-hi=(DrugUserfish$conf.int[2]/(DrugUserfish$conf.int[2] +1))
+low=(DrugUserfish$conf.int[1]/(DrugUserfish$conf.int[1] +1))*100
+hi=(DrugUserfish$conf.int[2]/(DrugUserfish$conf.int[2] +1))*100
 options(digits=2)
 ```
 
@@ -279,4 +279,3 @@ The Covid-19 vaccine was not effective in participants who are men or gay.The co
 The Covid-19 vaccine effectively protected women and drug users, their odds were 1:2 with the vaccine. That's half as likely to get covid than those taking placebo. The effectiveness for gals was `r effectivenessgal` and for drug users it was `r effectivenessDrugUser` .
 
 The vaccine is not recommended for people who are gay. It is recommended for individuals who are female or drug users since it was the most effective in those two groups.
-
